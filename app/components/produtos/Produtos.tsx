@@ -37,6 +37,7 @@ export default function Produtos() {
             localStorage.setItem('carrinho', JSON.stringify(novoCarrinho));
         }
     };
+    
 
     const aumentarQuantidade = (index) => {
         const novoCarrinho = [...carrinho];
