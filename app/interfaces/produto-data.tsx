@@ -11,3 +11,11 @@ export interface ProdutosData {
 export interface ProdutosResponse {
     data: ProdutosData[]
 }
+
+export interface Product {
+    id: number;
+    name: string;
+    photo: string;
+    price: number;
+    quantidade?: number;
+}

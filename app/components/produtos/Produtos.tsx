@@ -6,14 +6,8 @@ import { IoCart } from "react-icons/io5";
 import { FiShoppingBag } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
 import { IoClose } from "react-icons/io5";
+import { Product } from "@/app/interfaces/produto-data";
 
-interface Product {
-    id: number;
-    name: string;
-    photo: string;
-    price: number;
-    quantidade?: number;
-}
 
 export default function Produtos() {
     const [Abrir, setAbrir] = useState(false);
