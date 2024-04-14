@@ -7,9 +7,18 @@ import { FiShoppingBag } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
 import { IoClose } from "react-icons/io5";
 
+interface Product {
+    id: number;
+    name: string;
+    photo: string;
+    price: number;
+    quantidade?: number; // opcional, pois será adicionado dinamicamente
+    // adicione outros campos conforme necessário
+}
+
 export default function Produtos() {
     const [Abrir, setAbrir] = useState(false);
-    const [carrinho, setCarrinho] = useState([]);
+    const [carrinho, setCarrinho] = useState<Product[]>([]);
     const [total, setTotal] = useState(0);
     const [Resolucao, setResolucao] = useState(false);
 
@@ -23,11 +32,11 @@ export default function Produtos() {
 
     const { isLoading, isError, data } = Products();
 
-    const adicionarAoCarrinho = (item) => {
+    const adicionarAoCarrinho = (item: Product) => {
         const existente = carrinho.find((produto) => produto.id === item.id);
         if (existente) {
             const novoCarrinho = carrinho.map((produto) =>
-                produto.id === item.id ? { ...produto, quantidade: produto.quantidade + 1 } : produto
+                produto.id === item.id ? { ...produto, quantidade: (produto.quantidade || 0) + 1 } : produto
             );
             setCarrinho(novoCarrinho);
             localStorage.setItem('carrinho', JSON.stringify(novoCarrinho));
@@ -37,33 +46,34 @@ export default function Produtos() {
             localStorage.setItem('carrinho', JSON.stringify(novoCarrinho));
         }
     };
-    
 
-    const aumentarQuantidade = (index) => {
+    const aumentarQuantidade = (index: number) => {
         const novoCarrinho = [...carrinho];
-        novoCarrinho[index].quantidade++;
+        novoCarrinho[index].quantidade = (novoCarrinho[index].quantidade || 0) + 1;
         setCarrinho(novoCarrinho);
         localStorage.setItem('carrinho', JSON.stringify(novoCarrinho));
     };
 
-    const diminuirQuantidade = (index) => {
+    const diminuirQuantidade = (index: number) => {
         const novoCarrinho = [...carrinho];
-        if (novoCarrinho[index].quantidade > 1) {
-            novoCarrinho[index].quantidade--;
+        const item = novoCarrinho[index];
+        if (item && typeof item.quantidade === 'number' && item.quantidade > 1) {
+            item.quantidade--;
             setCarrinho(novoCarrinho);
             localStorage.setItem('carrinho', JSON.stringify(novoCarrinho));
         }
     };
 
-    const removerCardCarrinho = (index) => {
+
+    const removerCardCarrinho = (index: number) => {
         const novoCarrinho = [...carrinho];
         novoCarrinho.splice(index, 1);
         setCarrinho(novoCarrinho);
         localStorage.setItem('carrinho', JSON.stringify(novoCarrinho));
     };
 
-    const calcularTotalItem = (item) => {
-        return item.price * item.quantidade;
+    const calcularTotalItem = (item: Product) => {
+        return (item.price || 0) * (item.quantidade || 0);
     };
 
     const calcularTotal = () => {
@@ -71,7 +81,7 @@ export default function Produtos() {
     };
 
     const calcularTotalItensCarrinho = () => {
-        return carrinho.reduce((total, item) => total + item.quantidade, 0);
+        return carrinho.reduce((total, item) => total + (item.quantidade || 0), 0);
     };
 
     const finalizarCompra = () => {
@@ -90,7 +100,7 @@ export default function Produtos() {
     useEffect(() => {
         localStorage.setItem('carrinho', JSON.stringify(carrinho));
         localStorage.setItem('total', JSON.stringify(calcularTotal()));
-    }, [carrinho]);
+    }, [carrinho, calcularTotal]);
 
     useEffect(() => {
         const carrinhoLocalStorage = localStorage.getItem('carrinho');
@@ -152,7 +162,7 @@ export default function Produtos() {
                     <p>Ocorreu um erro ao carregar os produtos.</p>
                 ) : data ? (
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 justify-center items-center">
-                        {data.map((item, index) => (
+                        {data.map((item: Product, index: number) => (
                             <motion.div key={index} className="bg-white border rounded-xl shadow-md w-[218px] h-[285px] cursor-pointer relative" whileHover={{ scale: 1.05 }}>
                                 <div className="flex justify-center items-center">
                                     <img src={item.photo} alt="" className="w-[150px] h-[150px]" />
@@ -167,6 +177,7 @@ export default function Produtos() {
                                 <motion.button onClick={() => adicionarAoCarrinho(item)} className="text-white bg-[#0F52BA] w-[100%] h-[32px] flex justify-center items-center absolute bottom-0 cursor-pointer text-[14px] rounded-b-xl" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}><FiShoppingBag className="mr-2" /> COMPRAR</motion.button>
                             </motion.div>
                         ))}
+
                     </div>
                 ) : (
                     <p>Nenhum produto encontrado</p>
