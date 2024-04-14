@@ -120,7 +120,7 @@ export default function Produtos() {
     }, []);
 
     return (
-        <div className="" style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 400, lineHeight: '19px' }}>
+        <div className="max-h-screen" style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 400, lineHeight: '19px' }}>
             <main className="w-[100%] h-[101px] bg-[#0F52BA] flex justify-between items-center relative">
                 <div className="ml-[5%]">
                     <Image src="/logo.png" alt="Minha imagem" width={300} height={100} className="pt-2" />
@@ -182,7 +182,7 @@ export default function Produtos() {
                 <div className="">
                     <div className="flex justify-between p-4">
                         <div>
-                            <p className="text-white font-bold text-[27px] pb-3" style={{ lineHeight: '19px' }}>Carrinho </p>
+                            <p className="text-white font-bold text-[27px] pb-3 mt-8" style={{ lineHeight: '19px' }}>Carrinho </p>
                             <p className="text-white font-bold text-[27px]" style={{ lineHeight: '19px' }}>de compras</p>
                         </div>
                         <div>
@@ -221,7 +221,7 @@ export default function Produtos() {
                 </div>
             </div>
 
-            <footer className={`w-[100%] h-[34px] bg-[#EEEEEE] flex justify-center items-center ${Resolucao ? "fixed bottom-0" : ""}`}>
+            <footer className={`w-[100%] h-[34px] bg-[#EEEEEE] flex justify-center items-center ${Resolucao ? "fixed bottom-0 z-10" : ""}`} >
                 <div>MKS sistemas © Todos os direitos reservados</div>
             </footer>
         </div>
