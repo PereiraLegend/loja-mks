@@ -12,8 +12,7 @@ interface Product {
     name: string;
     photo: string;
     price: number;
-    quantidade?: number; // opcional, pois será adicionado dinamicamente
-    // adicione outros campos conforme necessário
+    quantidade?: number;
 }
 
 export default function Produtos() {
